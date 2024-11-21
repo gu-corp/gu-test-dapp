@@ -1,9 +1,11 @@
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import Button from '@mui/material/Button';
 import { getConnectorClient } from '@wagmi/core'
-import { mainnet, polygon } from '@wagmi/core/chains'
+import { mainnet, polygon, sepolia } from '@wagmi/core/chains'
 import { config } from './wagmi.ts'
 import { addChain, switchChain } from 'viem/actions'
+
+const fakeTargetChain = sepolia;
 
 function App() {
   const account = useAccount()
@@ -14,7 +16,7 @@ function App() {
     try{
       const walletClient = await getConnectorClient(config)
       console.log(walletClient)
-      await switchChain(walletClient, { id: polygon.id })
+      await switchChain(walletClient, { id: fakeTargetChain.id })
     }catch(e){
       console.error(e);
     }
@@ -24,7 +26,7 @@ function App() {
     try{
       const walletClient = await getConnectorClient(config)
       console.log(walletClient)
-      await addChain(walletClient, { chain: polygon })
+      await addChain(walletClient, { chain: fakeTargetChain })
     }catch(e){
       console.error(e);
     }
@@ -67,11 +69,11 @@ function App() {
 
 
         <Button onClick={handleAddChain}>
-          Add Chain
+          Add {fakeTargetChain.name} network
         </Button>
 
         <Button onClick={handleSwitchChain}>
-          Switch Chain
+          Switch to {fakeTargetChain.name} network
         </Button>
 
       </div>
